@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "554847302648",
+    "project_id": "com-example-paroo-41d72",
+    "storage_bucket": "com-example-paroo-41d72.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554847302648:android:0e87fb490406abd2c6dc0d",
+        "android_client_info": {
+          "package_name": "com.expenseit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYtSieJEdTvbG1wOcbPedAa1fiZMp1w0o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
