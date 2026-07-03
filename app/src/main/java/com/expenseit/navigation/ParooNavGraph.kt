@@ -36,6 +36,8 @@ import com.expenseit.feature.tracker.ui.transactions.TransactionsScreen
 import com.expenseit.feature.splitter.ui.friends.FriendsScreen
 import com.expenseit.feature.splitter.ui.groups.GroupsScreen
 import com.expenseit.feature.splitter.ui.group_detail.GroupDetailScreen
+import com.expenseit.feature.auth.ui.LoginScreen
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Bottom navigation destinations.
@@ -83,15 +85,27 @@ fun ParooNavGraph(
     onThemeChange: (Int) -> Unit
 ) {
     val navController = rememberNavController()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val startDest = if (currentUser == null) "login" else BottomNavItem.Dashboard.route
 
     Scaffold(
         bottomBar = { ParooBottomBar(navController) }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = BottomNavItem.Dashboard.route,
+            startDestination = startDest,
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable("login") {
+                LoginScreen(
+                    onLoginSuccess = {
+                        navController.navigate(BottomNavItem.Dashboard.route) {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
+                )
+            }
+
             composable(BottomNavItem.Dashboard.route) {
                 DashboardScreen(
                     themeMode = themeMode,
@@ -134,9 +148,9 @@ fun ParooBottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    // Hide bottom bar on group detail screen
+    // Hide bottom bar on group detail screen or login screen
     val currentRoute = currentDestination?.route
-    if (currentRoute?.startsWith("group_detail") == true) return
+    if (currentRoute?.startsWith("group_detail") == true || currentRoute == "login") return
 
     NavigationBar {
         bottomNavItems.forEach { item ->
