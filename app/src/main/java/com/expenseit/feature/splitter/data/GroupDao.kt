@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Transaction
 import com.expenseit.core.model.ExpenseSplitEntity
 import com.expenseit.core.model.GroupEntity
 import com.expenseit.core.model.GroupExpenseEntity
@@ -49,6 +50,15 @@ interface GroupDao {
     // --- Group Expenses ---
     @Insert
     suspend fun insertExpense(expense: GroupExpenseEntity)
+
+    @Transaction
+    suspend fun insertExpenseWithSplits(
+        expense: GroupExpenseEntity,
+        splits: List<ExpenseSplitEntity>
+    ) {
+        insertExpense(expense)
+        splits.forEach { insertSplit(it) }
+    }
 
     @Query("DELETE FROM group_expenses WHERE id = :id")
     suspend fun deleteExpense(id: String)

@@ -63,8 +63,7 @@ class SplitterRepository(
         expense: GroupExpenseEntity,
         splits: List<ExpenseSplitEntity>
     ) {
-        groupDao.insertExpense(expense)
-        splits.forEach { groupDao.insertSplit(it) }
+        groupDao.insertExpenseWithSplits(expense, splits)
     }
 
     suspend fun deleteExpense(expenseId: String) {
